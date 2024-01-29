@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define BUF_MAX_SIZE 2
+#define BUF_MAX_SIZE 1024
 
 #define min(x, y) ((x)>(y)?(y):(x))
 
@@ -28,7 +28,9 @@ int main(int argc, char **args) {
     filename = args[2];
     substring = args[3];
    
+    // overlap means "aaa" has 2 substring "aa"
     // not supported yet
+    //
     printf("usage: substring-count <file path> <substring>\n");
     return -1;
   } else if (argc == 3) {
@@ -52,15 +54,34 @@ int main(int argc, char **args) {
   int max = 0;
   int sum = 0;
 
+  // the file for ther first time
+  // 
+  // the buffer might not contains the whole content of the files
+  // so we must store the current comparing position to continuously 
+  // read the file
+  //
   buf_len = fread(buf, 1, BUF_MAX_SIZE, input_file);
+
+
   while (buf_len) {
+
+    // repeatly compare the file content with the input substring and
+    // count it untils the sequence breaks.
     int count = 0;
     while (buf_len) {
       int n = min(buf_len-buf_offset, sstr_len - sstr_offset);
-      if (n_match_bytes(buf+buf_offset, sstr+ sstr_offset, n) == n){
 
+      // compare n valid bytes of the buffer and the input substring.
+      // 
+      // if matched, continue to read the file if match and increase
+      // count var if match whole input substring.
+      //
+      // else the row is breaks, start to compare input substring
+      // from the next bytes from the file.
+      if (n_match_bytes(buf+buf_offset, sstr+ sstr_offset, n) == n){
         buf_offset += n;
         sstr_offset += n;
+        
         if (buf_offset == buf_len) {
           buf_len = fread(buf, 1, BUF_MAX_SIZE, input_file);
           buf_offset = 0;
