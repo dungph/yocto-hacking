@@ -25,7 +25,7 @@ Add app layer to the build env
 bitbake-layers add-layer ../meta-app
 ```
 
-Add `substring-count` and target machine package to configuration at 'conf/local.conf'
+Add `substring-count` package and target machine to configuration at `conf/local.conf`:
 
 ```
 MACHINE ?= "qemuarm64"
