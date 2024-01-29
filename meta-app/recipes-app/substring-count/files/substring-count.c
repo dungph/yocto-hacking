@@ -81,7 +81,7 @@ int main(int argc, char **args) {
   }
 
 
-  printf("\"%s\" occurs %d times, max %d times", substring, sum, max);
+  printf("\"%s\" occurs %d times, max %d times continuously\n", substring, sum, max);
   
 
 
